@@ -1,0 +1,48 @@
+﻿@page "/fetchdata"
+@inject HttpClient Http
+@inject IRevenuesAndCapacityByMonth _revenuesAndCapacityByMonth
+
+<h1>Office Reservation Data</h1>
+
+<p>This component fetching data from the file</p>
+
+@if (reservation == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Capacity</th>
+                <th>Monthly Price</th>
+                <th>Start Day</th>
+                <th>End Day</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var res in reservation)
+            {
+                <tr>
+                    <td>@res.Capacity.ToString()</td>
+                    <td>@res.MonthlyPrice.ToString()</td>
+                    <td>@res.StartDate.ToString()</td>
+                    <td>@res.EndDate.ToString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<IReservations> reservation;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (_revenuesAndCapacityByMonth.Cached != null)
+            reservation = _revenuesAndCapacityByMonth.Cached ;
+        }
+    }
+
+

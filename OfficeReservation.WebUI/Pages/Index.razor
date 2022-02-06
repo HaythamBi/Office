@@ -1,0 +1,79 @@
+﻿@page "/"
+
+@inject HttpClient Http
+@inject IWebAssemblyHostEnvironment HostEnvironment
+@inject IConfigurations _Configurations
+@inject IRevenuesAndCapacityByMonth _revenuesAndCapacityByMonth;
+<h1>Office Reservation</h1>
+
+Welcome
+
+
+    <label>
+        Select Month and year
+        <input type="month" @bind-value="Mydate" format-value="2004-01" />
+    </label>
+    <label>
+        File:
+        <input style="width:250px" disabled type="text" placeholder="wwwroot/sample-data/rent.txt">
+    </label>
+    <br />
+    <button @onclick="SelectedDateChanged" >Process</button>
+    <br />
+    <br />
+
+    <div>
+        <p>
+            Capacity:
+            <label>@Capacity</label>
+        </p>
+        <p>
+            Revenues:
+            <label>@Revenues</label>
+        </p>
+    </div>
+    <p>
+        <h2>
+        <label> @exception </label> 
+        </h2>
+    </p>
+
+
+@code{
+
+    private string exception;
+
+
+    public string Capacity { get; set; } = "0";
+    private string Revenues { get; set; } = "0";
+
+    protected async Task<string> SelectedDateChanged()
+    {
+        try
+        {
+            _Configurations.Data = await Http.GetStringAsync("sample-data/rent.txt");
+            var results = _revenuesAndCapacityByMonth.Execute(Mydate);
+            Capacity = results.Capacity.ToString();
+            Revenues = results.Revenues.ToString();
+        }
+        catch (Exception e)
+        {
+            exception = e.Message;
+        }
+
+        return "";
+    }
+
+
+    private DateTime _mydate = DateTime.Parse("2014-01");
+
+    public DateTime Mydate
+    {
+        get { return _mydate; }
+        set
+        {
+            _mydate = value;
+        }
+    }
+
+}
