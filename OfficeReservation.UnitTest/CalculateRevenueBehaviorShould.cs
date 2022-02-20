@@ -47,23 +47,23 @@ namespace OfficeReservation.UnitTest
             {
                 Capacity = 5,
                 MonthlyPrice = 601,
-                StartDate = DateTime.Parse("2014-02-15"),
-                EndDate = DateTime.Parse("2014-04-1")
+                StartDate = DateTime.Parse("2012-02-15"),
+                EndDate = DateTime.Parse("2014-04-14")
             });
 
             reservations.Add(new Reservations
             {
                 Capacity = 3,
                 MonthlyPrice = 300,
-                StartDate = DateTime.Parse("2014-09-15"),
-                EndDate = DateTime.Parse("2014-11-1")
+                StartDate = DateTime.Parse("2012-09-15"),
+                EndDate = DateTime.Parse("2016-11-1")
             });
 
             var inputDate = DateTime.Parse("2014-2");
             var output = CalculateRevenueBehavior.CalculateRevenueBySpecificedMonth(reservations, inputDate);
             Assert.NotNull(output);
-            Assert.Equal(3, output.Capacity);
-            Assert.Equal(300, (int)output.Revenues);
+            Assert.Equal(0, output.Capacity);
+            Assert.Equal(901, (int)output.Revenues);
         }
 
 
@@ -103,7 +103,7 @@ namespace OfficeReservation.UnitTest
             {
                 Capacity = 5,
                 MonthlyPrice = 601,
-                StartDate = DateTime.Parse("2014-04-3"),
+                StartDate = DateTime.Parse("2013-04-1"),
                 EndDate = DateTime.Parse("2014-04-30")
             });
 
@@ -119,7 +119,7 @@ namespace OfficeReservation.UnitTest
             var output = CalculateRevenueBehavior.CalculateRevenueBySpecificedMonth(reservations, inputDate);
             Assert.NotNull(output);
             Assert.Equal(3, output.Capacity);
-            Assert.Equal(560, (int)output.Revenues);
+            Assert.Equal(600, (int)output.Revenues);
         }
 
 
